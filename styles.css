@@ -574,3 +574,133 @@ footer p {
         min-width: 260px;
     }
 }
+
+/* ===== UPDATED SERVICES SECTION ===== */
+.services {
+    padding: 4rem 0;
+    overflow: hidden; /* prevent horizontal overflow from breaking layout */
+}
+
+.services h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.services-grid {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+    gap: 1.8rem;
+    padding-bottom: 1rem; /* space for scrollbar */
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-light) transparent;
+}
+
+.services-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.services-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.services-grid::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 10px;
+}
+
+.service-card {
+    flex: 0 0 320px; /* fixed width, no shrinking */
+    scroll-snap-align: start;
+    min-height: 220px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+}
+
+.service-card p {
+    color: var(--gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Hide cards when filtered (keep in flex row but hide) */
+.service-card.hidden {
+    display: none;
+}
+
+/* ===== SCROLL ANIMATIONS (Intersection Observer) ===== */
+.fade-in-right {
+    opacity: 0;
+    transform: translateX(80px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Also add a subtle float animation to the hero */
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 10%;
+    width: 80%;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    filter: blur(20px);
+    animation: floatShadow 4s ease-in-out infinite;
+}
+
+@keyframes floatShadow {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+    50% { transform: translateY(10px) scale(1.1); opacity: 0.5; }
+}
