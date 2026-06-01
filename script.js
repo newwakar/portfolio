@@ -105,16 +105,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// Intersection Observer for scroll animations (services)
+// ---- Scroll Animation ----
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.animationPlayState = 'running';
+            entry.target.classList.add('visible');
         }
     });
-}, { threshold: 0.2 });
+}, { threshold: 0.1 });
 
-document.querySelectorAll('.service-card').forEach(card => {
-    card.style.animationPlayState = 'paused';
+// Observe the main sections
+document.querySelectorAll('#services, #pricing, #contact').forEach(section => {
+    section.classList.add('animate-on-scroll');
+    observer.observe(section);
+});
+
+// Also observe individual pricing cards if desired
+document.querySelectorAll('.pricing-card').forEach(card => {
+    card.classList.add('animate-on-scroll');
     observer.observe(card);
 });
