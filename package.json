@@ -1,0 +1,9 @@
+{
+  "name": "freelance-portfolio",
+  "version": "1.0.0",
+  "description": "Freelance software engineer portfolio",
+  "scripts": {
+    "dev": "npx http-server",
+    "build": "echo 'No build needed for static site'"
+  }
+}
