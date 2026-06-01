@@ -38,6 +38,42 @@ body {
     padding: 0 24px;
 }
 
+/* ===== ANIMATED FLOATING PARTICLES ===== */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+    animation: float 20s ease-in-out infinite;
+}
+
+body::before {
+    background: var(--primary);
+    top: -10%;
+    left: -5%;
+    animation-delay: 0s;
+}
+
+body::after {
+    background: var(--secondary);
+    bottom: -10%;
+    right: -5%;
+    animation-delay: -7s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(50px, -80px) scale(1.2); }
+    50% { transform: translate(-30px, 50px) scale(0.9); }
+    75% { transform: translate(60px, -30px) scale(1.1); }
+}
+
 /* ===== HEADER ===== */
 header {
     background: rgba(255, 255, 255, 0.7);
@@ -229,7 +265,7 @@ header:hover {
     color: var(--gray);
 }
 
-/* ===== SERVICES SECTION (Horizontal Scroll) ===== */
+/* ===== SERVICES SECTION (Vertical scroll) ===== */
 .services {
     padding: 4rem 0;
 }
@@ -248,32 +284,12 @@ header:hover {
 }
 
 .services-grid {
-    display: flex;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.8rem;
-    padding: 1rem 0;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-light) transparent;
-    -webkit-overflow-scrolling: touch;
-}
-
-.services-grid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.services-grid::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.services-grid::-webkit-scrollbar-thumb {
-    background: var(--primary-light);
-    border-radius: 10px;
 }
 
 .service-card {
-    flex: 0 0 300px;
-    scroll-snap-align: start;
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     padding: 2rem;
@@ -284,9 +300,10 @@ header:hover {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    /* fadeInUp animation on scroll – handled by JS */
     opacity: 0;
     transform: translateY(30px);
-    animation: fadeInScroll 0.6s ease forwards;
+    animation: fadeInUp 0.6s forwards;
 }
 
 .service-card:nth-child(1) { animation-delay: 0.1s; }
@@ -294,10 +311,6 @@ header:hover {
 .service-card:nth-child(3) { animation-delay: 0.3s; }
 .service-card:nth-child(4) { animation-delay: 0.4s; }
 .service-card:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes fadeInScroll {
-    to { opacity: 1; transform: translateY(0); }
-}
 
 .service-card::before {
     content: '';
@@ -339,26 +352,25 @@ header:hover {
     display: none;
 }
 
-/* ===== PRICING SECTION (Vertical Scroll) ===== */
+/* ===== PRICING SECTION (Horizontal scroll) ===== */
 .pricing {
     padding: 4rem 0;
     background: transparent;
 }
 
 .pricing-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    max-height: 600px;
-    overflow-y: auto;
-    padding: 0 0.5rem;
-    scroll-snap-type: y mandatory;
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 0.5rem 2rem;
+    scroll-snap-type: x mandatory;
     scrollbar-width: thin;
-    scrollbar-color: var(--secondary) transparent;
+    scrollbar-color: var(--primary) transparent;
+    -webkit-overflow-scrolling: touch;
 }
 
 .pricing-grid::-webkit-scrollbar {
-    width: 8px;
+    height: 6px;
 }
 
 .pricing-grid::-webkit-scrollbar-track {
@@ -366,12 +378,11 @@ header:hover {
 }
 
 .pricing-grid::-webkit-scrollbar-thumb {
-    background: var(--secondary);
-    border-radius: 10px;
+    background: var(--primary);
+    border-radius: 3px;
 }
 
 .pricing-card {
-    scroll-snap-align: start;
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     padding: 2.5rem 2rem;
@@ -381,17 +392,27 @@ header:hover {
     transition: var(--transition);
     text-align: center;
     position: relative;
+    min-width: 280px;
+    max-width: 320px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    /* Staggered fadeIn from left */
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.5s ease forwards;
+    transform: translateX(-30px);
+    animation: slideInLeft 0.6s forwards;
 }
 
-.pricing-card:nth-child(1) { animation-delay: 0.2s; }
-.pricing-card:nth-child(2) { animation-delay: 0.4s; }
-.pricing-card:nth-child(3) { animation-delay: 0.6s; }
+.pricing-card:nth-child(1) { animation-delay: 0.1s; }
+.pricing-card:nth-child(2) { animation-delay: 0.2s; }
+.pricing-card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
 
 .pricing-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-6px) scale(1.02);
     border-color: var(--primary-light);
     box-shadow: var(--shadow-lg);
 }
@@ -403,7 +424,7 @@ header:hover {
 
 .pricing-card.featured:hover {
     border-color: var(--secondary-light);
-    transform: translateY(-6px);
+    transform: translateY(-8px);
 }
 
 .pricing-card h3 {
@@ -525,18 +546,19 @@ footer {
     background: var(--dark);
     color: white;
     text-align: center;
-    padding: 2rem 0;
+    padding: 2.5rem 0;
     margin-top: 3rem;
 }
 
 footer p {
     margin: 0.5rem 0;
+    opacity: 0.8;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 
     .nav-links {
@@ -544,27 +566,11 @@ footer p {
         font-size: 0.9rem;
     }
 
-    .service-card {
-        flex: 0 0 250px;
+    .services-grid {
+        grid-template-columns: 1fr;
     }
 
-    .pricing-grid {
-        max-height: 500px;
+    .pricing-card {
+        min-width: 260px;
     }
-}
-.services,
-.pricing {
-    position: relative;
-}
-
-.services::after,
-.pricing::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    background: linear-gradient(to right, transparent, var(--light));
-    pointer-events: none;
 }
