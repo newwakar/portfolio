@@ -8,51 +8,18 @@
     <meta name="author" content="Your Name">
     <title>Freelance Software Engineer - Web & Mobile Development Services</title>
     <link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<style>
-.scroll-left {
- height: 50px;	
- overflow: hidden;
- position: relative;
- background: yellow;
- color: orange;
- border: 1px solid orange;
-}
-.scroll-left p {
- position: absolute;
- width: 100%;
- height: 100%;
- margin: 0;
- line-height: 50px;
- text-align: center;
- /* Starting position */
- transform:translateX(100%);
- /* Apply animation to this element */
- animation: scroll-left 15s linear infinite;
-}
-/* Move it (define the animation) */
-@keyframes scroll-left {
- 0%   {
- transform: translateX(100%); 		
- }
- 100% {
- transform: translateX(-100%); 
- }
-}
-</style>
-
-
-
-
-    
     <header>
         <nav class="navbar">
             <div class="container">
-                <div class="scroll-left">
-                <div class="logo">💻 Dev Services</div>
-            </div>
+                <!-- Vertical scrolling brand name -->
+                <div class="logo-wrapper">
+                    <div class="logo-scroll">
+                        <span>💻 Dev Services</span>
+                        <span>💻 Dev Services</span>
+                    </div>
+                </div>
                 <ul class="nav-links">
                     <li><a href="#services">Services</a></li>
                     <li><a href="#pricing">Pricing</a></li>
@@ -66,8 +33,8 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-                <h1> Hi,  I am TheWakar </h1>
-                <h3>Freelance Software Engineer</h3><br>
+                <h1>Hi, I am TheWakar</h1><br>
+                    <h2>>Freelance Software Engineer</h2><br>
                 <p>Quality code, affordable rates, fast delivery</p>
                 <a href="#contact" class="cta-button">Get Started</a>
             </div>
@@ -85,12 +52,14 @@
             </div>
         </section>
 
-        <!-- Services Section -->
+        <!-- My Services - Horizontal Scrolling -->
         <section id="services" class="services">
             <div class="container">
-                <h2>Services</h2>
-                <div class="services-grid" id="servicesGrid">
-                    <!-- Services will be populated by JavaScript -->
+                <h2>My Services</h2>
+                <div class="services-carousel">
+                    <div class="services-track" id="servicesTrack">
+                        <!-- Services will be populated by JavaScript -->
+                    </div>
                 </div>
             </div>
         </section>
@@ -109,13 +78,12 @@
         <section id="contact" class="contact">
             <div class="container">
                 <h2>Get in Touch</h2>
-                <form class="contact-form" action="https://formspree.io/f/mbdbvekn" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="_replyto" placeholder="Your Email" required>
-    <textarea name="message" placeholder="Describe your project..." rows="5" required></textarea>
-    <button type="submit" class="submit-button">Send Message</button>
-</form>
-
+                <form class="contact-form" action="https://formspree.io/f/your_form_id" method="POST">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="_replyto" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Describe your project..." rows="5" required></textarea>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
             </div>
         </section>
     </main>
