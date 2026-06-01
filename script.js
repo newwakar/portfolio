@@ -199,3 +199,43 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(styleSheet);
 
 });
+// After the existing code (inside DOMContentLoaded)
+
+// ---- Scroll animation (fade-in-right) ----
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // Optionally unobserve after first animation
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Apply to all service cards (only visible ones)
+document.querySelectorAll('.service-card:not(.hidden)').forEach(card => {
+    card.classList.add('fade-in-right');
+    observer.observe(card);
+});
+
+// Also observe pricing cards and contact form for smooth entrance
+document.querySelectorAll('.pricing-card, .contact-form').forEach(el => {
+    el.classList.add('fade-in-right');
+    observer.observe(el);
+});
+
+// Re-observe when search filters change
+searchInput.addEventListener('input', () => {
+    // Re‑observe visible cards after filtering
+    document.querySelectorAll('.service-card:not(.hidden)').forEach(card => {
+        if (!card.classList.contains('fade-in-right')) {
+            card.classList.add('fade-in-right');
+        }
+        observer.observe(card);
+    });
+});
