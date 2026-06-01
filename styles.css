@@ -552,3 +552,19 @@ footer p {
         max-height: 500px;
     }
 }
+.services,
+.pricing {
+    position: relative;
+}
+
+.services::after,
+.pricing::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    background: linear-gradient(to right, transparent, var(--light));
+    pointer-events: none;
+}
