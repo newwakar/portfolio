@@ -75,20 +75,7 @@
     <textarea name="message" placeholder="Describe your project..." rows="5" required></textarea>
     <button type="submit" class="submit-button">Send Message</button>
 </form>
-``` **Note:** The field `name="_replyto"` makes Formspree use that email as the reply-to address.
 
-4. Deploy your changes – all form submissions will now be forwarded to the email address you registered with Formspree.
-
-## Alternative: EmailJS (JS library)
-
-If you prefer not to use a form action, install [EmailJS](https://www.emailjs.com/) (free tier: 200 emails/month). You’ll send via JavaScript:
-
-```javascript
-emailjs.send('service_id', 'template_id', {
-    from_name: name,
-    reply_to: email,
-    message: message
-}, 'public_key');
             </div>
         </section>
     </main>
