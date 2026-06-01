@@ -104,3 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// Intersection Observer for scroll animations (services)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.service-card').forEach(card => {
+    card.style.animationPlayState = 'paused';
+    observer.observe(card);
+});
