@@ -38,7 +38,7 @@ body {
     padding: 0 24px;
 }
 
-/* ===== ANIMATED FLOATING PARTICLES ===== */
+/* ===== ANIMATED FLOATING BACKGROUND ===== */
 body::before,
 body::after {
     content: '';
@@ -50,7 +50,7 @@ body::after {
     opacity: 0.15;
     z-index: -1;
     pointer-events: none;
-    animation: float 20s ease-in-out infinite;
+    animation: float-bg 20s ease-in-out infinite;
 }
 
 body::before {
@@ -67,7 +67,7 @@ body::after {
     animation-delay: -7s;
 }
 
-@keyframes float {
+@keyframes float-bg {
     0%, 100% { transform: translate(0, 0) scale(1); }
     25% { transform: translate(50px, -80px) scale(1.2); }
     50% { transform: translate(-30px, 50px) scale(0.9); }
@@ -148,7 +148,7 @@ header:hover {
     width: 100%;
 }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO ===== */
 .hero {
     background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     background-size: 400% 400%;
@@ -230,7 +230,7 @@ header:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== SEARCH SECTION ===== */
+/* ===== SEARCH ===== */
 .search-section {
     padding: 2.5rem 0;
     background: transparent;
@@ -265,7 +265,7 @@ header:hover {
     color: var(--gray);
 }
 
-/* ===== SERVICES SECTION (Horizontal Scroll) ===== */
+/* ===== SERVICES (Horizontal Scroll) ===== */
 .services {
     padding: 4rem 0;
 }
@@ -283,14 +283,13 @@ header:hover {
     background-clip: text;
 }
 
-/* Horizontal scroll container */
 .services-grid {
     display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+    overflow-x: auto;
     gap: 1.8rem;
-    padding-bottom: 1rem;
+    padding: 1rem 0 2rem;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
@@ -309,10 +308,8 @@ header:hover {
     border-radius: 3px;
 }
 
-/* Service cards: fixed width, snap */
 .service-card {
-    flex: 0 0 auto;
-    width: 280px;
+    flex: 0 0 280px;
     scroll-snap-align: start;
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -324,7 +321,18 @@ header:hover {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s forwards;
 }
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+.service-card:nth-child(7) { animation-delay: 0.7s; }
 
 .service-card::before {
     content: '';
@@ -362,11 +370,7 @@ header:hover {
     line-height: 1.6;
 }
 
-.service-card.hidden {
-    display: none;
-}
-
-/* ===== PRICING SECTION (Vertical grid) ===== */
+/* ===== PRICING (Vertical Grid) ===== */
 .pricing {
     padding: 4rem 0;
     background: transparent;
@@ -376,8 +380,7 @@ header:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding: 0 0.5rem;
 }
 
 .pricing-card {
@@ -390,7 +393,14 @@ header:hover {
     transition: var(--transition);
     text-align: center;
     position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s forwards;
 }
+
+.pricing-card:nth-child(1) { animation-delay: 0.2s; }
+.pricing-card:nth-child(2) { animation-delay: 0.4s; }
+.pricing-card:nth-child(3) { animation-delay: 0.6s; }
 
 .pricing-card:hover {
     transform: translateY(-6px);
@@ -481,7 +491,7 @@ header:hover {
     transform: scale(0.96);
 }
 
-/* ===== CONTACT SECTION ===== */
+/* ===== CONTACT ===== */
 .contact {
     padding: 4rem 0;
 }
@@ -498,6 +508,10 @@ header:hover {
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s forwards;
+    animation-delay: 0.3s;
 }
 
 .contact-form input,
@@ -520,16 +534,17 @@ header:hover {
 
 .contact-form textarea {
     resize: vertical;
+    min-height: 120px;
 }
 
 .submit-button {
-    padding: 1rem;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     border: none;
+    padding: 1rem;
     border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: var(--transition);
 }
@@ -537,4 +552,9 @@ header:hover {
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    filter: brightness(1.1);
+}
+
+.submit-button:active {
+    transform: scale(0.97);
 }
