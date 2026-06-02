@@ -1,33 +1,63 @@
+// Wait for DOM to load
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ---- Data Definitions ----
     const servicesData = [
-        { title: "Web Development", description: "Responsive websites using React, Vue, or vanilla JavaScript. SEO-optimized and fast-loading.", keywords: ["web", "development", "react", "vue", "javascript"] },
-        { title: "Mobile Apps", description: "Native and cross-platform mobile applications for iOS and Android using React Native or Flutter.", keywords: ["mobile", "app", "ios", "android"] },
-        { title: "API Development", description: "RESTful and GraphQL APIs with Node.js, Python, or Java. Secure and scalable backend solutions.", keywords: ["api", "backend", "node.js", "python"] },
-        { title: "Database Design", description: "SQL and NoSQL database design, optimization, and management.", keywords: ["database", "sql", "mongodb"] },
-        { title: "UI/UX Design", description: "Modern, user-friendly interfaces with Figma. Prototyping, wireframing.", keywords: ["ui", "ux", "design", "figma"] }
+        {
+            title: "Web Development",
+            description: "Responsive websites using React, Vue, or vanilla JavaScript. SEO-optimized and fast-loading.",
+            keywords: ["web", "development", "react", "vue", "javascript", "html", "css", "frontend", "responsive"]
+        },
+        {
+            title: "Mobile Apps",
+            description: "Native and cross-platform mobile applications for iOS and Android using React Native or Flutter.",
+            keywords: ["mobile", "app", "ios", "android", "react native", "flutter", "cross-platform"]
+        },
+        {
+            title: "API Development",
+            description: "RESTful and GraphQL APIs with Node.js, Python, or Java. Secure and scalable backend solutions.",
+            keywords: ["api", "backend", "node.js", "python", "java", "rest", "graphql", "server"]
+        },
+        {
+            title: "Database Design",
+            description: "SQL and NoSQL database design, optimization, and management. PostgreSQL, MongoDB, Firebase.",
+            keywords: ["database", "sql", "nosql", "postgresql", "mongodb", "firebase", "data"]
+        },
+        {
+            title: "UI/UX Design",
+            description: "Modern, user-friendly interfaces with Figma. Prototyping, wireframing, and user research.",
+            keywords: ["ui", "ux", "design", "figma", "prototyping", "wireframe", "interface"]
+        }
     ];
 
     const pricingData = [
-        { plan: "Basic", price: "$50", period: "/ hour", features: ["Single page website", "Responsive design", "Basic SEO", "2 revisions"], buttonText: "Start Basic" },
-        { plan: "Standard", price: "$100", period: "/ hour", features: ["Multi-page website", "Mobile apps (basic)", "API integration", "5 revisions"], buttonText: "Go Standard", highlighted: true },
-        { plan: "Premium", price: "$150", period: "/ hour", features: ["Full-stack application", "Custom APIs", "Database design", "Unlimited revisions"], buttonText: "Go Premium" }
+        {
+            plan: "Basic",
+            price: "$50",
+            period: "/ hour",
+            features: ["Single page website", "Responsive design", "Basic SEO", "2 revisions"],
+            buttonText: "Start Basic"
+        },
+        {
+            plan: "Standard",
+            price: "$100",
+            period: "/ hour",
+            features: ["Multi-page website", "Mobile apps (basic)", "API integration", "5 revisions"],
+            buttonText: "Go Standard",
+            highlighted: true
+        },
+        {
+            plan: "Premium",
+            price: "$150",
+            period: "/ hour",
+            features: ["Full-stack application", "Custom APIs", "Database design", "Unlimited revisions"],
+            buttonText: "Go Premium"
+        }
     ];
 
-    // --- Horizontal scrolling track with duplicated items ---
-    const track = document.getElementById('servicesTrack');
-    // Create original cards
+    // ---- Render Services ----
+    const servicesGrid = document.getElementById('servicesGrid');
     servicesData.forEach(service => {
-        const card = createServiceCard(service);
-        track.appendChild(card);
-    });
-    // Duplicate for seamless loop
-    servicesData.forEach(service => {
-        const card = createServiceCard(service);
-        track.appendChild(card);
-    });
-
-    function createServiceCard(service) {
         const card = document.createElement('div');
         card.className = 'service-card';
         card.dataset.keywords = service.keywords.join(' ');
@@ -35,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3>${service.title}</h3>
             <p>${service.description}</p>
         `;
-        return card;
-    }
+        servicesGrid.appendChild(card);
+    });
 
-    // --- Pricing ---
+    // ---- Render Pricing ----
     const pricingGrid = document.getElementById('pricingGrid');
     pricingData.forEach(item => {
         const card = document.createElement('div');
@@ -54,22 +84,43 @@ document.addEventListener('DOMContentLoaded', () => {
         pricingGrid.appendChild(card);
     });
 
-    // --- Search filtering (affects visible cards) ---
+    // ---- Search Functionality ----
     const searchInput = document.getElementById('searchInput');
-    const allCards = document.querySelectorAll('.service-card');
+    const serviceCards = document.querySelectorAll('.service-card');
 
     searchInput.addEventListener('input', function() {
         const query = this.value.toLowerCase().trim();
-        // Hide all cards first, then show matching ones
-        // But scroll track has duplicates, so we filter both sets
-        allCards.forEach(card => {
+        serviceCards.forEach(card => {
             const title = card.querySelector('h3').textContent.toLowerCase();
             const description = card.querySelector('p').textContent.toLowerCase();
             const keywords = (card.dataset.keywords || '').toLowerCase();
-            const match = query === '' || title.includes(query) || description.includes(query) || keywords.includes(query);
-            card.style.display = match ? '' : 'none';
+            
+            if (query === '' || title.includes(query) || description.includes(query) || keywords.includes(query)) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
         });
-        // If no results, we might want to show "no results" message - optional
+    });
+
+    // ---- Scroll Animation ----
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    // Observe sections and pricing cards for fade-in
+    document.querySelectorAll('#services, #pricing, #contact').forEach(section => {
+        section.classList.add('animate-on-scroll');
+        observer.observe(section);
+    });
+
+    document.querySelectorAll('.pricing-card').forEach(card => {
+        card.classList.add('animate-on-scroll');
+        observer.observe(card);
     });
 
 });
