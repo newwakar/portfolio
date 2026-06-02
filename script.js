@@ -27,6 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "UI/UX Design",
             description: "Modern, user-friendly interfaces with Figma. Prototyping, wireframing, and user research.",
             keywords: ["ui", "ux", "design", "figma", "prototyping", "wireframe", "interface"]
+        },
+        {
+            title: "Cloud Architecture",
+            description: "AWS, GCP, or Azure infrastructure. Scalable, cost-optimized cloud solutions.",
+            keywords: ["cloud", "aws", "gcp", "azure", "infrastructure", "scalable"]
+        },
+        {
+            title: "DevOps & CI/CD",
+            description: "Docker, Kubernetes, GitHub Actions. Automated deployments and monitoring.",
+            keywords: ["devops", "ci/cd", "docker", "kubernetes", "github actions", "deployment"]
         }
     ];
 
@@ -55,8 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // ---- Render Services ----
+    // ---- Render Services (Horizontal Scroll) ----
     const servicesGrid = document.getElementById('servicesGrid');
+    // Ensure it stays horizontal (styles.css already sets flex)
     servicesData.forEach(service => {
         const card = document.createElement('div');
         card.className = 'service-card';
@@ -68,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         servicesGrid.appendChild(card);
     });
 
-    // ---- Render Pricing ----
+    // ---- Render Pricing (Vertical grid) ----
     const pricingGrid = document.getElementById('pricingGrid');
     pricingData.forEach(item => {
         const card = document.createElement('div');
@@ -84,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pricingGrid.appendChild(card);
     });
 
-    // ---- Search Functionality ----
+    // ---- Search Functionality (filters horizontal cards) ----
     const searchInput = document.getElementById('searchInput');
     const serviceCards = document.querySelectorAll('.service-card');
 
@@ -96,31 +107,85 @@ document.addEventListener('DOMContentLoaded', () => {
             const keywords = (card.dataset.keywords || '').toLowerCase();
             
             if (query === '' || title.includes(query) || description.includes(query) || keywords.includes(query)) {
-                card.classList.remove('hidden');
+                card.style.display = 'block';
+                card.style.flex = '0 0 auto';
             } else {
-                card.classList.add('hidden');
+                card.style.display = 'none';
             }
         });
     });
 
-    // ---- Scroll Animation ----
+    // ---- Scroll Animation: Fade-in on scroll ----
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.15 });
+    }, observerOptions);
 
-    // Observe sections and pricing cards for fade-in
-    document.querySelectorAll('#services, #pricing, #contact').forEach(section => {
-        section.classList.add('animate-on-scroll');
-        observer.observe(section);
+    // Animate service cards, pricing cards, and contact form
+    const animateElements = document.querySelectorAll('.service-card, .pricing-card, .contact-form');
+    animateElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
     });
 
-    document.querySelectorAll('.pricing-card').forEach(card => {
-        card.classList.add('animate-on-scroll');
-        observer.observe(card);
-    });
+    // ---- Optional: Typewriter effect on hero subtitle ----
+    const heroSubtitle = document.querySelector('.hero p');
+    if (heroSubtitle) {
+        const text = heroSubtitle.textContent;
+        heroSubtitle.textContent = '';
+        let i = 0;
+        const typeInterval = setInterval(() => {
+            if (i < text.length) {
+                heroSubtitle.textContent += text[i];
+                i++;
+            } else {
+                clearInterval(typeInterval);
+            }
+        }, 30);
+    }
+
+    // ---- Floating particles in hero (decorative) ----
+    function createParticles() {
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '6px';
+            particle.style.height = '6px';
+            particle.style.background = 'rgba(255,255,255,0.3)';
+            particle.style.borderRadius = '50%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animation = `floatParticle ${5 + Math.random() * 5}s linear infinite`;
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            hero.appendChild(particle);
+        }
+    }
+    createParticles();
+
+    // Add keyframe for floating animation dynamically
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(styleSheet);
 
 });
