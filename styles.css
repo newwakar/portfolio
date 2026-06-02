@@ -38,7 +38,43 @@ body {
     padding: 0 24px;
 }
 
-/* ===== HEADER (unchanged) ===== */
+/* ===== ANIMATED FLOATING PARTICLES ===== */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+    animation: float 20s ease-in-out infinite;
+}
+
+body::before {
+    background: var(--primary);
+    top: -10%;
+    left: -5%;
+    animation-delay: 0s;
+}
+
+body::after {
+    background: var(--secondary);
+    bottom: -10%;
+    right: -5%;
+    animation-delay: -7s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(50px, -80px) scale(1.2); }
+    50% { transform: translate(-30px, 50px) scale(0.9); }
+    75% { transform: translate(60px, -30px) scale(1.1); }
+}
+
+/* ===== HEADER ===== */
 header {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
@@ -112,7 +148,7 @@ header:hover {
     width: 100%;
 }
 
-/* ===== HERO (unchanged) ===== */
+/* ===== HERO SECTION ===== */
 .hero {
     background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
     background-size: 400% 400%;
@@ -194,7 +230,7 @@ header:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== SEARCH (unchanged) ===== */
+/* ===== SEARCH SECTION ===== */
 .search-section {
     padding: 2.5rem 0;
     background: transparent;
@@ -229,7 +265,11 @@ header:hover {
     color: var(--gray);
 }
 
-/* ===== SECTION HEADINGS ===== */
+/* ===== SERVICES SECTION (Horizontal Scroll) ===== */
+.services {
+    padding: 4rem 0;
+}
+
 .services h2,
 .pricing h2,
 .contact h2 {
@@ -243,45 +283,37 @@ header:hover {
     background-clip: text;
 }
 
-/* ===== HORIZONTAL SCROLL FOR SERVICES & PRICING ===== */
-.services-grid,
-.pricing-grid {
-    display: flex;
+/* Horizontal scroll container */
+.services-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
     gap: 1.8rem;
-    overflow-x: auto;
+    padding-bottom: 1rem;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 1rem 0 1.5rem;   /* space for shadows */
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
 }
 
-.services-grid::-webkit-scrollbar,
-.pricing-grid::-webkit-scrollbar {
-    height: 8px;
+.services-grid::-webkit-scrollbar {
+    height: 6px;
 }
 
-.services-grid::-webkit-scrollbar-track,
-.pricing-grid::-webkit-scrollbar-track {
+.services-grid::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.services-grid::-webkit-scrollbar-thumb,
-.pricing-grid::-webkit-scrollbar-thumb {
+.services-grid::-webkit-scrollbar-thumb {
     background: var(--primary);
-    border-radius: 10px;
+    border-radius: 3px;
 }
 
-/* ===== CARDS ===== */
-.service-card,
-.pricing-card {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    min-width: 280px;
-    max-width: 320px;
-}
-
+/* Service cards: fixed width, snap */
 .service-card {
+    flex: 0 0 auto;
+    width: 280px;
+    scroll-snap-align: start;
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     padding: 2rem;
@@ -334,6 +366,20 @@ header:hover {
     display: none;
 }
 
+/* ===== PRICING SECTION (Vertical grid) ===== */
+.pricing {
+    padding: 4rem 0;
+    background: transparent;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
 .pricing-card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -347,7 +393,7 @@ header:hover {
 }
 
 .pricing-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-6px);
     border-color: var(--primary-light);
     box-shadow: var(--shadow-lg);
 }
@@ -359,7 +405,7 @@ header:hover {
 
 .pricing-card.featured:hover {
     border-color: var(--secondary-light);
-    transform: translateY(-6px);
+    transform: translateY(-8px);
 }
 
 .pricing-card h3 {
@@ -435,7 +481,7 @@ header:hover {
     transform: scale(0.96);
 }
 
-/* ===== CONTACT ===== */
+/* ===== CONTACT SECTION ===== */
 .contact {
     padding: 4rem 0;
 }
@@ -474,40 +520,21 @@ header:hover {
 
 .contact-form textarea {
     resize: vertical;
-    min-height: 120px;
 }
 
 .submit-button {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     border: none;
-    padding: 1rem 2rem;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: var(--shadow-sm);
 }
 
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-}
-
-.submit-button:active {
-    transform: scale(0.96);
-}
-
-/* ===== SCROLL ANIMATIONS ===== */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
 }
